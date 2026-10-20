@@ -1,107 +1,94 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Study · 学习计划</title>
+<meta name="robots" content="noindex,nofollow">
+<title>Study · 私密访问</title>
 <style>
-  :root{--bg:#f4f9f7;--card:#fff;--ink:#152420;--muted:#5b7168;--accent:#0f766e;--accent-soft:#e6f4f1;--deep:#0b3d38;--border:#dbe9e4}
+  :root{--bg:#f2f8fd;--card:#fff;--ink:#0f2436;--muted:#5b7186;--accent:#0284c7;--accent-soft:#e3f2fc;--deep:#075985;--border:#d8e6f2}
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-    background:var(--bg);color:var(--ink);line-height:1.75;font-size:15.5px}
-  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
-  header.hero{background:linear-gradient(135deg,#052e2b,#0f766e 65%,#14b8a6 130%);color:#fff;padding:46px 24px 40px;border-radius:0 0 24px 24px}
-  .hero-inner{max-width:980px;margin:0 auto}
-  .tag{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:3px 13px;font-size:12.5px;letter-spacing:1px;margin-bottom:14px}
-  h1{font-size:28px;font-weight:700}
-  .sub{margin-top:10px;font-size:15.5px;opacity:.95;max-width:860px}
-  .sub b{color:#fde68a}
-  .chips{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
-  .chip{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.3);padding:4px 12px;border-radius:999px;font-size:12.5px}
-  section.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px 30px;margin:22px 0;box-shadow:0 1px 3px rgba(10,60,50,.05)}
-  h2{font-size:19px;margin-bottom:14px;padding-left:12px;border-left:4px solid var(--accent)}
-  h2 .en{color:var(--muted);font-size:12.5px;font-weight:400;margin-left:9px}
-  p{margin:8px 0} a{color:var(--accent)} .muted{color:var(--muted);font-size:13px}
-  .entries{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0}
-  .entry{display:block;text-decoration:none;border:1px solid var(--border);border-radius:14px;padding:20px 20px;background:#fbfefd;color:var(--ink);transition:transform .15s, box-shadow .15s}
-  .entry:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(10,60,50,.10);border-color:var(--accent)}
-  .entry .ico{font-size:26px}
-  .entry h3{font-size:16px;color:var(--deep);margin:8px 0 4px}
-  .entry p{font-size:13px;color:var(--muted);margin:0;line-height:1.6}
-  .callout{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:14px 18px;margin:14px 0;font-size:14.5px}
-  .callout b{color:#0b3d38}
-  footer{text-align:center;color:var(--muted);font-size:13px;padding:22px 24px 40px;line-height:2}
-  @media(max-width:820px){.entries{grid-template-columns:1fr}}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:linear-gradient(160deg,var(--bg),var(--accent-soft));min-height:100vh;
+    display:flex;align-items:center;justify-content:center;color:var(--ink);font-size:15px}
+  .login{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:38px 40px;width:360px;
+    box-shadow:0 8px 30px rgba(10,60,110,.12)}
+  .ico{font-size:30px;text-align:center}
+  h1{font-size:18px;text-align:center;margin:10px 0 4px;color:var(--deep)}
+  p.tip{text-align:center;color:var(--muted);font-size:12.5px;margin-bottom:20px}
+  label{display:block;font-size:12.5px;color:var(--muted);margin:12px 0 5px}
+  input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:9px;font-size:14px;
+    background:var(--accent-soft);color:var(--ink);outline:none}
+  input:focus{border-color:var(--accent)}
+  button{width:100%;margin-top:20px;padding:11px;border:none;border-radius:9px;background:var(--accent);
+    color:#fff;font-size:15px;font-weight:700;cursor:pointer}
+  button:hover{filter:brightness(1.08)}
+  .err{color:#b91c1c;font-size:12.5px;text-align:center;margin-top:12px;min-height:18px}
+  .ok{color:#047857;font-size:12.5px;text-align:center;margin-top:12px;min-height:18px}
 </style>
+<script>try{document.documentElement.dataset.theme=localStorage.getItem("study_theme")||"light"}catch(e){}</script>
 </head>
 <body>
-
-<header class="hero">
-  <div class="hero-inner">
-    <span class="tag">STUDY · PERSONAL LEARNING PLAN</span>
-    <h1>学习计划 · SRE → AI Infra</h1>
-    <p class="sub">一份按<b>年 / 月 / 周</b>滚动执行的 AI Infra 方向学习计划：vLLM 推理 → GPU 监控与调度 → 沙箱与存储 → 外部反馈校准。每周一随招聘市场信号同步校准优先级。</p>
-    <div class="chips">
-      <span class="chip">当前阶段：2026 Q4 · vLLM 推理实验</span>
-      <span class="chip">27 项学习任务</span>
-      <span class="chip">周期 2026-10 ~ 2027-09</span>
-    </div>
+  <div class="login">
+    <div class="ico">🔒</div>
+    <h1>Study · 私密访问</h1>
+    <p class="tip">本站内容已加密，登录后解锁</p>
+    <label>账号</label>
+    <input id="u" autocomplete="username" placeholder="账号">
+    <label>密码</label>
+    <input id="p" type="password" autocomplete="current-password" placeholder="密码">
+    <button id="go">解 锁</button>
+    <div class="err" id="err"></div>
+    <div class="ok" id="okmsg"></div>
   </div>
-</header>
-
-<div class="wrap">
-
-<section class="card">
-  <h2>从这里进入<span class="en">Start Here</span></h2>
-  <div class="entries">
-    <a class="entry" href="calendar.html">
-      <div class="ico">📅</div>
-      <h3>学习计划日历</h3>
-      <p>年 → 月 → 周三级计划，可点击日历看详情、可勾选记进度；当前季度拆到周。</p>
-    </a>
-    <a class="entry" href="roadmap.html">
-      <div class="ico">🗺️</div>
-      <h3>学习路线图</h3>
-      <p>三线 27 项：AI-native 沉淀 / AI Infra 补课（主战场）/ SRE 根基加厚，附节奏建议。</p>
-    </a>
-    <a class="entry" href="market.html">
-      <div class="ico">📡</div>
-      <h3>市场信号</h3>
-      <p>每周一自动扫描招聘市场：关键词频次、新出现的技术要求，用来校准学习优先级。</p>
-    </a>
-  </div>
-</section>
-
-<section class="card">
-  <h2>这套计划怎么运转<span class="en">How It Works</span></h2>
-  <div class="callout"><b>信号 → 计划 → 执行 → 复盘</b> 的闭环：每周一自动扫描招聘市场拿到技能需求信号 → 对照路线图校准 P0-P3 优先级 → 月度对账计划 vs 实际 → 季度复盘调整方向。日历里的每个任务都带检验标准。</div>
-  <p class="muted">留言用 GitHub 账号登录即可（基于 giscus + GitHub Discussions），每个页面一条独立讨论串。</p>
-</section>
-
-</div>
-
-<div class="wrap">
-<section class="card" style="padding:20px 28px">
-  <h2>💬 留言<span class="en">Giscus · 登录 GitHub 即可评论</span></h2>
-  <script src="https://giscus.app/client.js"
-    data-repo="fadewalk/study"
-    data-repo-id="R_kgDOVQ4iMQ"
-    data-category="General"
-    data-category-id="DIC_kwDOVQ4iMc4DJKmH"
-    data-mapping="pathname"
-    data-strict="0"
-    data-reactions-enabled="1"
-    data-emit-metadata="0"
-    data-input-position="top"
-    data-theme="light"
-    data-lang="zh-CN"
-    data-loading="lazy"
-    crossorigin="anonymous" async>
-  </script>
-</section>
-</div>
-
-<footer>本站为个人学习计划的公开视图 · 完整底稿在私有仓库 · 每周一随市场信号自动同步</footer>
-
+<script>
+const BLOB = {"salt":"LdRxuU8hYg2OnZLzgm1doQ==","iv":"PzOJIyYpC1Qzz8jm","tag":"iSOUTwS0EC4S+KpHCbTzsw==","ct":"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"};
+const FILE = "index.html";
+const ITER = 150000;
+async function deriveKey(pass, saltB64) {
+  const enc = new TextEncoder();
+  const km = await crypto.subtle.importKey('raw', enc.encode(pass), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt: Uint8Array.from(atob(saltB64), c => c.charCodeAt(0)),
+      iterations: ITER, hash: 'SHA-256' },
+    km, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+}
+// 解密：WebCrypto 要求 GCM tag 附在密文尾部，Node 侧是分开存的，这里先拼接
+async function decryptFull(pass) {
+  const key = await deriveKey(pass, BLOB.salt);
+  const ct = Uint8Array.from(atob(BLOB.ct), c => c.charCodeAt(0));
+  const tag = Uint8Array.from(atob(BLOB.tag), c => c.charCodeAt(0));
+  const joined = new Uint8Array(ct.length + tag.length);
+  joined.set(ct); joined.set(tag, ct.length);
+  const plain = await crypto.subtle.decrypt(
+    { name: 'AES-GCM', iv: Uint8Array.from(atob(BLOB.iv), c => c.charCodeAt(0)), tagLength: 128 },
+    key, joined);
+  return new TextDecoder().decode(plain);
+}
+function render(html, pass) {
+  try { sessionStorage.setItem('study_pwd', pass); } catch (e) {}
+  document.open(); document.write(html); document.close();
+}
+async function tryUnlock(u, p, silent) {
+  const err = document.getElementById('err');
+  if (u !== "admin") { if (!silent) err.textContent = '账号或密码不正确'; return false; }
+  try {
+    const html = await decryptFull(p);
+    render(html, p);
+    return true;
+  } catch (e) { if (!silent) err.textContent = '账号或密码不正确'; return false; }
+}
+const go = document.getElementById('go');
+go.onclick = () => tryUnlock(document.getElementById('u').value.trim(), document.getElementById('p').value, false);
+document.getElementById('p').addEventListener('keydown', e => { if (e.key === 'Enter') go.click(); });
+(async () => {
+  try {
+    const saved = sessionStorage.getItem('study_pwd');
+    if (saved && await tryUnlock("admin", saved, true)) {
+      document.getElementById('okmsg').textContent = '已自动解锁…';
+    }
+  } catch (e) {}
+})();
+</script>
 </body>
 </html>
