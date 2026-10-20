@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学习计划日历 · Study</title>
+<style>
+  :root{
+    --bg:#f4f9f7; --card:#ffffff; --ink:#152420; --muted:#5b7168;
+    --accent:#0f766e; --accent-soft:#e6f4f1; --deep:#0b3d38;
+    --border:#dbe9e4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.7;font-size:15px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+  header.hero{background:linear-gradient(135deg,#052e2b 0%,#0f766e 65%,#14b8a6 130%);color:#fff;padding:40px 24px 34px;border-radius:0 0 24px 24px}
+  .hero-inner{max-width:1080px;margin:0 auto}
+  .hero .tag{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:3px 13px;font-size:12.5px;letter-spacing:1px;margin-bottom:12px}
+  .hero h1{font-size:26px;font-weight:700;letter-spacing:.5px}
+  .hero p.sub{margin-top:10px;font-size:15px;opacity:.95;max-width:880px}
+  .hero p.sub b{color:#fde68a}
+  .chips{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+  .chip{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.3);padding:4px 12px;border-radius:999px;font-size:12.5px}
+
+  nav.toc{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:10px 0;margin-bottom:26px}
+  nav.toc .wrap{padding:0 20px;display:flex;flex-wrap:wrap}
+  nav.toc a{color:var(--muted);text-decoration:none;font-size:13.5px;margin-right:16px;padding:4px 2px;border-bottom:2px solid transparent;white-space:nowrap}
+  nav.toc a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+  nav.toc a.on{color:var(--deep);border-bottom-color:var(--accent);font-weight:700}
+
+  section.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin:22px 0;box-shadow:0 1px 3px rgba(10,60,50,.05)}
+  h2{font-size:19px;margin-bottom:14px;padding-left:12px;border-left:4px solid var(--accent)}
+  h2 .en{color:var(--muted);font-size:12.5px;font-weight:400;margin-left:9px}
+  h3{font-size:15.5px;margin:16px 0 8px;color:#0b3d38}
+  p{margin:8px 0}
+  a{color:var(--accent)}
+  .muted{color:var(--muted);font-size:13px}
+
+  .phases{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}
+  .phase{border:1px solid var(--border);border-top:4px solid var(--accent);border-radius:12px;padding:15px 16px;background:#fbfefd}
+  .phase.now{border-top-color:#d97706;background:#fffdf7}
+  .phase .q{display:inline-block;color:#fff;font-size:12px;font-weight:700;border-radius:6px;padding:2px 9px;margin-bottom:8px;background:var(--deep);letter-spacing:.5px}
+  .phase.now .q{background:#d97706}
+  .phase h4{font-size:14px;line-height:1.5;margin-bottom:6px}
+  .phase .goal{font-size:12.5px;color:var(--muted);border-top:1px dashed var(--border);padding-top:7px;margin-top:7px;line-height:1.6}
+  .phase .prog{margin-top:9px}
+  .prog .bar{background:#eef5f2;border-radius:5px;height:9px;overflow:hidden}
+  .prog .fill{height:100%;background:linear-gradient(90deg,#34d399,#059669);border-radius:5px;min-width:0;transition:width .3s}
+  .prog .lab{font-size:11.5px;color:var(--muted);margin-top:3px}
+
+  .ctrl{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:16px}
+  .tabs{display:flex;gap:6px;background:#eef5f2;border-radius:10px;padding:4px}
+  .tabs button{border:none;background:transparent;padding:6px 16px;border-radius:8px;font-size:13.5px;cursor:pointer;color:var(--muted);font-weight:600;font-family:inherit}
+  .tabs button.on{background:#fff;color:var(--deep);box-shadow:0 1px 3px rgba(10,60,50,.12)}
+  .mnav{display:flex;align-items:center;gap:8px}
+  .mnav button{border:1px solid var(--border);background:#fff;border-radius:8px;width:32px;height:32px;font-size:15px;cursor:pointer;color:var(--accent);font-family:inherit}
+  .mnav button:hover{background:var(--accent-soft)}
+  .mnav .cur{font-weight:700;color:var(--deep);font-size:15.5px;min-width:96px;text-align:center}
+
+  .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+  .cal .dow{font-size:12.5px;color:var(--muted);text-align:center;padding:4px 0;font-weight:600}
+  .day{border:1px solid var(--border);border-radius:10px;min-height:86px;padding:6px 7px;background:#fbfefd;cursor:pointer;position:relative}
+  .day:hover{border-color:var(--accent)}
+  .day.out{opacity:.38}
+  .day.today{border:2px solid #d97706;background:#fffdf7}
+  .day.sel{border-color:var(--accent);background:var(--accent-soft)}
+  .day .dnum{font-size:12.5px;font-weight:700;color:var(--deep)}
+  .day.today .dnum{color:#b45309}
+  .day .chips{display:flex;flex-direction:column;gap:3px;margin-top:4px}
+  .tchip{font-size:10.5px;line-height:1.35;border-radius:5px;padding:2px 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;font-weight:600}
+  .day .more{font-size:10.5px;color:var(--muted);margin-top:2px}
+
+  .task{display:flex;gap:10px;align-items:flex-start;padding:11px 13px;border:1px solid var(--border);border-radius:11px;margin:8px 0;background:#fbfefd}
+  .task input[type=checkbox]{width:17px;height:17px;margin-top:3px;flex:none;accent-color:var(--accent);cursor:pointer}
+  .task.done{opacity:.55}
+  .task.done .ttitle{text-decoration:line-through}
+  .task .tmain{flex:1;min-width:0}
+  .task .ttitle{font-size:14px;font-weight:600;color:#1f3630}
+  .task .tdetail{font-size:12.5px;color:var(--muted);margin-top:2px;line-height:1.6}
+  .task .tmeta{font-size:11.5px;color:var(--muted);margin-top:4px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .lane-tag{display:inline-block;font-size:11px;font-weight:700;border-radius:5px;padding:1px 7px}
+  .l2{background:#eef2ff;color:#4338ca}
+  .l1{background:#ecfdf5;color:#047857}
+  .l3{background:#f1f5f9;color:#475569}
+  .kind-tag{display:inline-block;font-size:11px;border-radius:5px;padding:1px 7px;background:#fff;border:1px solid var(--border);color:var(--muted)}
+
+  .weekcard{border:1px solid var(--border);border-radius:13px;margin:12px 0;background:#fbfefd;overflow:hidden}
+  .weekcard .whead{display:flex;justify-content:space-between;align-items:center;padding:10px 15px;background:#eef7f4;font-size:13.5px;font-weight:700;color:var(--deep)}
+  .weekcard .whead .wp{font-size:12px;color:var(--muted);font-weight:400}
+  .weekcard .wbody{padding:6px 13px 12px}
+  .weekcard.done-week{opacity:.75}
+  .weekcard.done-week .whead{background:#e7f6f0}
+
+  .phase-block{margin:16px 0}
+  .phase-block .ph{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+  .phase-block .ph b{font-size:15px;color:var(--deep)}
+  .phase-block .ph .pl{font-size:12.5px;color:var(--muted)}
+
+  .empty{color:var(--muted);font-size:13.5px;padding:18px;text-align:center;border:1px dashed var(--border);border-radius:10px}
+  .toolbar{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+  .toolbar button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:5px 12px;font-size:12.5px;cursor:pointer;color:var(--muted);font-family:inherit}
+  .toolbar button:hover{color:var(--accent);border-color:var(--accent)}
+
+  footer{text-align:center;color:var(--muted);font-size:13px;padding:22px 24px 40px;line-height:2}
+  @media(max-width:860px){
+    .phases{grid-template-columns:repeat(2,1fr)}
+    .day{min-height:70px;padding:4px 5px}
+    .tchip{font-size:9.5px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="tag">STUDY · 学习计划日历</span>
+    <h1>年 → 月 → 周，把 27 项学习项排进日历</h1>
+    <p class="sub">覆盖 <b>2026-10 ~ 2027-09</b>：当前季度拆到<b>周</b>，其后按<b>月</b>滚动细化；任务可勾选（进度存本机浏览器），点击日历格看当天任务详情，页面底部可留言。</p>
+    <div class="chips">
+      <span class="chip">当前阶段：2026 Q4 · 主攻 vLLM</span>
+      <span class="chip">每周一自动同步市场信号</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="index.html">🏠 首页</a>
+    <a href="calendar.html" class="on">📅 日历</a>
+    <a href="roadmap.html">🗺️ 路线图</a>
+    <a href="market.html">📡 市场信号</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<section class="card">
+  <h2>年计划 · 四阶段<span class="en">2026-10 ~ 2027-09</span></h2>
+  <div class="phases" id="phases"></div>
+</section>
+
+<section class="card">
+  <div class="ctrl">
+    <div class="tabs">
+      <button data-view="month" class="on">📅 月历</button>
+      <button data-view="week">🗓️ 周计划</button>
+      <button data-view="tasks">✅ 任务清单</button>
+    </div>
+    <div class="mnav" id="mnav">
+      <button id="prev" title="上一月">‹</button>
+      <span class="cur" id="curLabel"></span>
+      <button id="next" title="下一月">›</button>
+    </div>
+  </div>
+  <div id="viewBody"></div>
+  <div class="toolbar"><span class="muted" id="hint"></span><button id="reset">重置勾选</button></div>
+</section>
+
+</div>
+
+<footer>
+  本站为个人学习计划的公开视图（每周一随市场信号同步）· 完整底稿在私有仓库<br>
+  勾选进度仅存本机浏览器 · 登录 GitHub 可在下方留言
+</footer>
+
+<script>
+/* ============ 数据 ============ */
+const PHASES = [
+  {id:'q4', label:'2026 Q4 · 当前', cls:'now', theme:'主攻 vLLM 推理实验 + 存量笔记偿债 ≥3 篇 + MCP 规范精读', goal:'检验：推理实验报告可对外讲 15 分钟'},
+  {id:'q1', label:'2027 Q1', cls:'', theme:'GPU 监控（DCGM）+ K8s GPU 调度实验 + eBPF 个人重做与性能剖析', goal:'检验：GPU 观测/调度实验报告 + 火焰图优化报告各 1 份'},
+  {id:'q2', label:'2027 Q2', cls:'', theme:'沙箱/存储拆解笔记 + AI SRE 能力叙事与案例成稿', goal:'检验：能力叙事文档成稿 + 3 个案例可讲'},
+  {id:'q3', label:'2027 Q3', cls:'', theme:'外部实践与反馈校准（AI Infra / LLM Ops 方向）', goal:'检验：获得真实外部反馈，校准方向'},
+];
+
+const LANE_COLOR = {'① 沉淀':'#059669','② AI Infra':'#4f46e5','③ 根基':'#64748b','里程碑':'#b45309'};
+
+/* date=具体日（周计划锚定周一）；month=按月 */
+const TASKS = [
+  // ---- 2026 Q4（按周）----
+  {id:'w42a', date:'2026-10-12', lane:'② AI Infra', kind:'实验', title:'vLLM 跑通：环境搭建 + 小模型 first token', detail:'conda/uv 建环境；拉 Qwen2.5-7B-Instruct；vLLM 起服务出 first token；记录显存占用与踩坑。对应路线图 ② 推理线第 1 项。'},
+  {id:'w42b', date:'2026-10-12', lane:'① 沉淀', kind:'笔记', title:'RAG 落地方法论笔记：搭大纲', detail:'定骨架：背景 / 架构选型 / 检索优化 / 评测 / 踩坑。'},
+  {id:'w43a', date:'2026-10-19', lane:'② AI Infra', kind:'实验', title:'vLLM 参数实验：batching / KV cache / 量化', detail:'continuous batching 开关对比、gpu-memory-utilization 与 KV cache 配置、AWQ vs GPTQ 量化版对比；记录吞吐与质量权衡。'},
+  {id:'w43b', date:'2026-10-19', lane:'① 沉淀', kind:'笔记', title:'RAG 方法论笔记成稿 v1', detail:'发布到个人阵地，做到可对外讲。'},
+  {id:'w44a', date:'2026-10-26', lane:'② AI Infra', kind:'实验', title:'vLLM 压测：benchmark_serving', detail:'并发梯度压测，画 TTFT / TPOT / 吞吐曲线；确认 goodput 统计口径。'},
+  {id:'w44b', date:'2026-10-26', lane:'③ 根基', kind:'笔记', title:'SRE Book 笔记 #1（SLO 章节优先）', detail:'目标 ≥3 篇；SLO 章直接服务推理 SLO 叙事，一举两得。'},
+  {id:'w45a', date:'2026-11-02', lane:'② AI Infra', kind:'实验', title:'推理 SLO 体系 + Grafana 面板', detail:'TTFT / TPOT / goodput / KV 命中率指标定义；vLLM metrics 接 Prometheus；Grafana 出板。'},
+  {id:'w45b', date:'2026-11-02', lane:'① 沉淀', kind:'笔记', title:'LLM 网关方法论笔记：搭大纲', detail:'LiteLLM：多模型纳管 / Token 统计 / 密钥隔离 / 权限管控。'},
+  {id:'w46a', date:'2026-11-09', lane:'② AI Infra', kind:'交付', title:'推理实验报告成稿 + 15 分钟演练', detail:'Q4 里程碑检验项：报告能对外讲 15 分钟；录一遍自检表达。'},
+  {id:'w46b', date:'2026-11-09', lane:'① 沉淀', kind:'笔记', title:'LLM 网关笔记成稿', detail:'与网关笔记大纲合并成稿发布。'},
+  {id:'w47a', date:'2026-11-16', lane:'① 沉淀', kind:'笔记', title:'运维智能体笔记成稿（含 ≥3 纠错案例）', detail:'LangChain/LangGraph + SOP→技能封装 + 纠错案例。'},
+  {id:'w47b', date:'2026-11-16', lane:'③ 根基', kind:'笔记', title:'SRE Book 笔记 #2', detail:'按继续阅读进度选章（建议容量管理 / 告警）。'},
+  {id:'w48a', date:'2026-11-23', lane:'② AI Infra', kind:'学习', title:'MCP 协议规范精读 + 拆解笔记', detail:'spec 逐节读：tools / resources / prompts、传输层、安全模型。'},
+  {id:'w49a', date:'2026-11-30', lane:'② AI Infra', kind:'实验', title:'运维 MCP server 个人版开工', detail:'最小闭环两个 tool：K8s 状态查询 + 告警摘要；对接 Prometheus 数据源。'},
+  {id:'w49b', date:'2026-11-30', lane:'③ 根基', kind:'笔记', title:'SRE Book 笔记 #3', detail:'Q4 三篇偿债的最后一篇。'},
+  {id:'w50a', date:'2026-12-07', lane:'② AI Infra', kind:'实验', title:'MCP server 功能完成', detail:'补只读操作 / 错误处理 / 超时；接 AI 编程助手实测整链路。'},
+  {id:'w51a', date:'2026-12-14', lane:'② AI Infra', kind:'交付', title:'MCP + 智能体 RCA demo 与实验报告', detail:'端到端 demo：告警触发 → MCP 取数 → 根因假设输出；报告可对外。'},
+  {id:'w51b', date:'2026-12-14', lane:'① 沉淀', kind:'笔记', title:'Agent 纠错案例补齐至 ≥3 个', detail:'每案例一页纸（现象/误判/纠正/启发）。'},
+  {id:'w52a', date:'2026-12-21', lane:'③ 根基', kind:'学习', title:'查漏：cgroup v2 / io_uring', detail:'认知级补课即可，不展开。'},
+  {id:'w53a', date:'2026-12-28', lane:'里程碑', kind:'复盘', title:'季度复盘：勾路线图 + 定 Q1 周计划', detail:'对照 Q4 检验标准逐项过；把 2027 Q1 任务细化到周。'},
+  // ---- 2027 Q1（按月）----
+  {id:'m0101', month:'2027-01', phase:'q1', lane:'② AI Infra', kind:'实验', title:'GPU 架构基础 + DCGM 监控单机实验', detail:'SM / 显存 / MIG / nvlink 拓扑认知；租一张卡（云上按量），DCGM+Prometheus+Grafana 出板。'},
+  {id:'m0102', month:'2027-01', phase:'q1', lane:'③ 根基', kind:'实验', title:'eBPF 脚本集个人重做启动', detail:'选 2-3 个探针重写并整理成可讲方法论。'},
+  {id:'m0201', month:'2027-02', phase:'q1', lane:'② AI Infra', kind:'实验', title:'K8s GPU 调度实验', detail:'device plugin + Volcano/Kueue：队列、配额、抢占；观察卡分配与碎片。'},
+  {id:'m0202', month:'2027-02', phase:'q1', lane:'③ 根基', kind:'交付', title:'eBPF 脚本集成稿 + 方法论笔记', detail:'脚本集收口发布。'},
+  {id:'m0301', month:'2027-03', phase:'q1', lane:'③ 根基', kind:'交付', title:'perf + 火焰图完整剖析报告', detail:'对 Q4 的 vLLM 服务做一次完整剖析：on-CPU/off-CPU 火焰图 + 一个可量化优化点。'},
+  {id:'m0302', month:'2027-03', phase:'q1', lane:'② AI Infra', kind:'交付', title:'GPU 观测 / 调度实验报告成稿', detail:'Q1 里程碑检验项：DCGM 监控 + K8s GPU 调度两实验合并成报告。'},
+  {id:'m0303', month:'2027-03', phase:'q1', lane:'② AI Infra', kind:'学习', title:'训练侧认知：NCCL / checkpoint / 故障域', detail:'认知级即可：读公开资料 + 论文/博客，不做实验。'},
+  // ---- 2027 Q2（按月）----
+  {id:'m0401', month:'2027-04', phase:'q2', lane:'② AI Infra', kind:'实验', title:'Agent 沙箱最小用例 + Ray/KubeRay 认知', detail:'gVisor / Firecracker 跑一个不受信代码隔离用例；Ray/KubeRay 读文档出认知笔记。'},
+  {id:'m0402', month:'2027-04', phase:'q2', lane:'② AI Infra', kind:'笔记', title:'3FS 拆解笔记（对标 Ceph/JuiceFS）', detail:'用既有分布式存储经验对照 AI 原生存储的设计取舍。'},
+  {id:'m0501', month:'2027-05', phase:'q2', lane:'里程碑', kind:'交付', title:'AI SRE 能力叙事成稿：定位文档 + 3 个案例', detail:'把 AI SRE 方向的定位、技能清单与 3 个复盘叙事案例整理成对外可讲的文档。'},
+  {id:'m0502', month:'2027-05', phase:'q2', lane:'② AI Infra', kind:'实验', title:'故障诊断 Agent 工具链（沙箱版）开工', detail:'故障排查流程封装成 Agent 诊断工具链。'},
+  {id:'m0601', month:'2027-06', phase:'q2', lane:'里程碑', kind:'学习', title:'算法与系统设计专题启动', detail:'服务端算法题恢复手感；系统设计按四大模块过题。'},
+  {id:'m0602', month:'2027-06', phase:'q2', lane:'里程碑', kind:'复盘', title:'H1 复盘 + 能力盘点刷新', detail:'半年期对照四阶段里程碑逐项过。'},
+  // ---- 2027 Q3（按月）----
+  {id:'m0701', month:'2027-07', phase:'q3', lane:'里程碑', kind:'学习', title:'场景专题：故障叙事 / SLO 设计 / 容量规划', detail:'三个成稿案例打磨到可脱稿讲；做 2 轮技术分享式演练。'},
+  {id:'m0801', month:'2027-08', phase:'q3', lane:'里程碑', kind:'里程碑', title:'外部实战检验 2-3 次（AI Infra / AIOps 方向）', detail:'以真实外部反馈校准能力地图；每次实践后必写复盘笔记。'},
+  {id:'m0901', month:'2027-09', phase:'q3', lane:'里程碑', kind:'复盘', title:'年度复盘：校准方向 + 定来年学习主题', detail:'基于外部反馈评估四阶段达成度，规划下一周期。'},
+];
+
+/* ============ 状态与工具 ============ */
+const MONTHS = (() => { const a=[]; let y=2026,m=10; while(y<2027||m<=9){ a.push(`${y}-${String(m).padStart(2,'0')}`); m++; if(m>12){m=1;y++;} } return a; })();
+let cur = '2026-10';
+let view = 'month';
+let selDate = null;
+const LS_KEY = 'mqPlanDone';
+let done = new Set(JSON.parse(localStorage.getItem(LS_KEY) || '[]'));
+const save = () => localStorage.setItem(LS_KEY, JSON.stringify([...done]));
+const TODAY = (() => { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; })();
+const laneCls = l => l==='① 沉淀'?'l1':(l==='② AI Infra'?'l2':'l3');
+const fmtMD = d => `${+d.slice(5,7)}.${+d.slice(8,10)}`;
+const isoWeek = ds => { const d=new Date(ds+'T00:00:00'); const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())); const dn=(t.getUTCDay()+6)%7; t.setUTCDate(t.getUTCDate()-dn+3); const f=new Date(Date.UTC(t.getUTCFullYear(),0,4)); return 'W'+String(1+Math.round(((t-f)/864e5-3+((f.getUTCDay()+6)%7))/7)).padStart(2,'0'); };
+const mondayOf = ds => { const d=new Date(ds+'T00:00:00'); const dn=(d.getDay()+6)%7; d.setDate(d.getDate()-dn); return d.toISOString().slice(0,10); };
+const phaseOf = ds => ds<'2027-01' ? 'q4' : (ds<'2027-04' ? 'q1' : (ds<'2027-07' ? 'q2' : 'q3'));
+const isDone = t => done.has(t.id) || t.done === true;
+const tasksOfMonth = ym => TASKS.filter(t => (t.date && t.date.startsWith(ym)) || t.month===ym);
+
+function taskRow(t){
+  const chk = done.has(t.id) || t.done === true;
+  const meta = [ `<span class="lane-tag ${laneCls(t.lane)}">${t.lane}</span>`, `<span class="kind-tag">${t.kind}</span>` ];
+  if(t.date) meta.push(`<span>${isoWeek(t.date)} · ${fmtMD(t.date)} 起</span>`);
+  return `<label class="task ${chk?'done':''}">
+    <input type="checkbox" data-id="${t.id}" ${chk?'checked':''}>
+    <span class="tmain"><span class="ttitle">${t.title}</span>
+      <div class="tdetail">${t.detail}</div>
+      <div class="tmeta">${meta.join('')}</div></span></label>`;
+}
+
+/* ============ 年计划 ============ */
+function renderPhases(){
+  document.getElementById('phases').innerHTML = PHASES.map(p=>{
+    const ids = TASKS.filter(t=>(t.phase||phaseOf(t.date||''))===p.id).map(t=>t.id);
+    const n = ids.filter(i=>{const t=TASKS.find(x=>x.id===i);return t&&(done.has(i)||t.done===true);}).length;
+    const pct = ids.length ? Math.round(n/ids.length*100) : 0;
+    return `<div class="phase ${p.cls}"><span class="q">${p.label}</span><h4>${p.theme}</h4>
+      <div class="goal">🎯 ${p.goal}</div>
+      <div class="prog"><div class="bar"><div class="fill" style="width:${pct}%"></div></div>
+      <div class="lab">${n}/${ids.length} 项完成</div></div></div>`;
+  }).join('');
+}
+
+/* ============ 月历视图 ============ */
+function renderMonth(){
+  const [y,m] = cur.split('-').map(Number);
+  const first = new Date(y, m-1, 1);
+  const start = (first.getDay()+6)%7;
+  const dim = new Date(y, m, 0).getDate();
+  const ts = tasksOfMonth(cur);
+  const byDate = {};
+  ts.filter(t=>t.date).forEach(t=>{ (byDate[t.date]=byDate[t.date]||[]).push(t); });
+  const monthTasks = ts.filter(t=>t.month);
+
+  let html = `<h3>📅 ${cur} 月历</h3>`;
+  if(monthTasks.length){
+    html += `<p class="muted" style="margin:2px 0 10px">本月主题任务（按月推进）：</p>` + monthTasks.map(taskRow).join('');
+  }
+  html += `<div class="cal" style="margin-top:10px">` + ['一','二','三','四','五','六','日'].map(d=>`<span class="dow">周${d}</span>`).join('');
+  for(let i=0;i<start;i++) html += `<div class="day out"></div>`;
+  for(let d=1; d<=dim; d++){
+    const ds = `${cur}-${String(d).padStart(2,'0')}`;
+    const items = byDate[ds]||[];
+    const cls = (ds===TODAY?'today ':'') + (ds===selDate?'sel ':'');
+    const chips = items.slice(0,2).map(t=>`<span class="tchip" style="background:${LANE_COLOR[t.lane]}">${t.title}</span>`).join('')
+      + (items.length>2?`<span class="more">+${items.length-2} 项</span>`:'');
+    html += `<div class="day ${cls}" data-date="${ds}"><div class="dnum">${d}</div><div class="chips">${chips}</div></div>`;
+  }
+  html += `</div><div id="dayDetail" style="margin-top:12px">`;
+  if(selDate && byDate[selDate]) html += `<h3>📄 ${fmtMD(selDate)} 当周任务（点勾选记进度）</h3>` + byDate[selDate].map(taskRow).join('');
+  else html += `<p class="muted" style="text-align:center;padding:10px">点击有任务标记的日期格，查看该周任务详情。</p>`;
+  html += `</div>`;
+  document.getElementById('viewBody').innerHTML = html;
+  document.getElementById('hint').textContent = `本月 ${ts.length} 项任务 · 已完成 ${ts.filter(isDone).length} 项`;
+}
+
+/* ============ 周计划视图 ============ */
+function renderWeek(){
+  const [y,m] = cur.split('-').map(Number);
+  const dim = new Date(y, m, 0).getDate();
+  const ts = tasksOfMonth(cur).filter(t=>t.date);
+  const byWeek = {};
+  ts.forEach(t=>{ const wk = mondayOf(t.date); (byWeek[wk]=byWeek[wk]||[]).push(t); });
+  const weeks = Object.keys(byWeek).sort();
+  let html = `<h3>🗓️ ${cur} 周计划（${weeks.length} 个任务周）</h3>`;
+  if(!weeks.length) html += `<div class="empty">本月暂无按周排期的任务（后续季度按月推进，季度复盘时回填周计划）。</div>`;
+  weeks.forEach(wk=>{
+    const items = byWeek[wk];
+    const dn = items.filter(isDone).length;
+    const we = new Date(wk); we.setDate(we.getDate()+6);
+    const weStr = `${we.getFullYear()}-${String(we.getMonth()+1).padStart(2,'0')}-${String(we.getDate()).padStart(2,'0')}`;
+    html += `<div class="weekcard ${dn===items.length?'done-week':''}">
+      <div class="whead"><span>${isoWeek(wk)} · ${fmtMD(wk)} ~ ${fmtMD(weStr)}</span><span class="wp">${dn}/${items.length} 完成</span></div>
+      <div class="wbody">${items.map(taskRow).join('')}</div></div>`;
+  });
+  document.getElementById('viewBody').innerHTML = html;
+  document.getElementById('hint').textContent = `滚动规则：每周日复盘时把下月任务细化为周计划。`;
+}
+
+/* ============ 任务清单视图 ============ */
+function renderTasks(){
+  let html = `<h3>✅ 全量任务清单（按阶段）</h3>`;
+  PHASES.forEach(p=>{
+    const items = TASKS.filter(t=>(t.phase||phaseOf(t.date||''))===p.id);
+    const dn = items.filter(isDone).length;
+    html += `<div class="phase-block"><div class="ph"><b>${p.label} · ${p.theme.split(' + ')[0]}</b><span class="pl">${dn}/${items.length} 完成</span></div>` +
+      (items.length ? items.map(taskRow).join('') : `<div class="empty">暂无任务</div>`) + `</div>`;
+  });
+  document.getElementById('viewBody').innerHTML = html;
+  document.getElementById('hint').textContent = `共 ${TASKS.length} 项 · 已完成 ${TASKS.filter(isDone).length} 项`;
+}
+
+/* ============ 渲染与事件 ============ */
+const RENDER = {month:renderMonth, week:renderWeek, tasks:renderTasks};
+function refresh(){
+  document.getElementById('curLabel').textContent = cur;
+  document.getElementById('mnav').style.visibility = view==='tasks' ? 'hidden' : 'visible';
+  RENDER[view]();
+  renderPhases();
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on', b.dataset.view===view));
+}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{ view=b.dataset.view; selDate=null; refresh(); });
+document.getElementById('prev').onclick=()=>{ const i=MONTHS.indexOf(cur); if(i>0){cur=MONTHS[i-1];selDate=null;refresh();} };
+document.getElementById('next').onclick=()=>{ const i=MONTHS.indexOf(cur); if(i<MONTHS.length-1){cur=MONTHS[i+1];selDate=null;refresh();} };
+document.getElementById('viewBody').addEventListener('click', e=>{
+  const day = e.target.closest('.day[data-date]');
+  if(day){ selDate = day.dataset.date; renderMonth(); return; }
+  const cb = e.target.closest('input[type=checkbox]');
+  if(cb){ const id=cb.dataset.id; cb.checked?done.add(id):done.delete(id); save(); refresh(); }
+});
+document.getElementById('reset').onclick=()=>{ done.clear(); save(); refresh(); };
+refresh();
+</script>
+
+<div class="wrap">
+<section class="card" style="padding:20px 28px">
+  <h2>💬 留言<span class="en">Giscus · 登录 GitHub 即可评论</span></h2>
+  <script src="https://giscus.app/client.js"
+    data-repo="fadewalk/study"
+    data-repo-id="R_kgDOVQ4iMQ"
+    data-category="General"
+    data-category-id="DIC_kwDOVQ4iMc4DJKmH"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous" async>
+  </script>
+</section>
+</div>
+
+</body>
+</html>

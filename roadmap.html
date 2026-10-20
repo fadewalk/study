@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学习路线图 · Study</title>
+<style>
+  :root{--bg:#f4f9f7;--card:#fff;--ink:#152420;--muted:#5b7168;--accent:#0f766e;--accent-soft:#e6f4f1;--deep:#0b3d38;--border:#dbe9e4}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.75;font-size:15.5px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+  header.hero{background:linear-gradient(135deg,#052e2b,#0f766e 65%,#14b8a6 130%);color:#fff;padding:40px 24px 34px;border-radius:0 0 24px 24px}
+  .hero-inner{max-width:1080px;margin:0 auto}
+  .tag{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:3px 13px;font-size:12.5px;letter-spacing:1px;margin-bottom:12px}
+  h1{font-size:26px;font-weight:700}
+  .sub{margin-top:10px;font-size:15px;opacity:.95}
+  nav.toc{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:10px 0;margin-bottom:26px}
+  nav.toc .wrap{padding:0 20px;display:flex;flex-wrap:wrap}
+  nav.toc a{color:var(--muted);text-decoration:none;font-size:13.5px;margin-right:16px;padding:4px 2px;border-bottom:2px solid transparent;white-space:nowrap}
+  nav.toc a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+  nav.toc a.on{color:var(--deep);border-bottom-color:var(--accent);font-weight:700}
+  section.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px 30px;margin:22px 0;box-shadow:0 1px 3px rgba(10,60,50,.05)}
+  h2{font-size:19px;margin-bottom:14px;padding-left:12px;border-left:4px solid var(--accent)}
+  h2 .en{color:var(--muted);font-size:12.5px;font-weight:400;margin-left:9px}
+  h3{font-size:15.5px;margin:16px 0 8px;color:#0b3d38}
+  p{margin:8px 0} a{color:var(--accent)} .muted{color:var(--muted);font-size:13px}
+  .legend{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:6px 0 16px;font-size:13.5px;color:var(--muted)}
+  .badge{display:inline-block;font-size:12px;padding:1px 10px;border-radius:999px;font-weight:600;white-space:nowrap;vertical-align:1px}
+  .b-ok{background:#ecfdf5;color:#047857;border:1px solid #a7f3d0}
+  .b-deep{background:#fffbeb;color:#b45309;border:1px solid #fde68a}
+  .b-new{background:#eef2ff;color:#4338ca;border:1px solid #c7d2fe}
+  .b-done{background:#f1f5f9;color:#475569;border:1px solid #cbd5e1}
+  .lanes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:14px 0}
+  .lane{border:1px solid var(--border);border-radius:14px;padding:16px 18px;background:#fbfefd}
+  .lane.l2{border:2px solid #c7d2fe;background:#f8f9ff}
+  .lane h4{font-size:15px;color:#0b3d38;margin-bottom:4px}
+  .lane .sub2{font-size:12.5px;color:var(--muted);margin-bottom:10px}
+  .lane ul{list-style:none;padding:0;margin:0}
+  .lane li{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-top:1px dashed var(--border);font-size:13.5px;line-height:1.55}
+  .lane li:first-child{border-top:none}
+  .lane li .badge{flex-shrink:0;margin-top:2px}
+  .lane .grp{font-size:12.5px;font-weight:700;color:var(--deep);margin:10px 0 2px;letter-spacing:.5px}
+  .lane .opt{color:var(--muted);font-size:12px}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+  th{background:#eef7f4;text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);white-space:nowrap}
+  td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:hover td{background:#fafdfc}
+  footer{text-align:center;color:var(--muted);font-size:13px;padding:22px 24px 40px;line-height:2}
+  @media(max-width:860px){.lanes{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="tag">STUDY · 学习路线图</span>
+    <h1>三线策略 · 27 项</h1>
+    <p class="sub">沉淀线（把已会的变成可讲的）× 主战场（AI Infra 补课）× 复利线（SRE 根基加厚）。</p>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="index.html">🏠 首页</a>
+    <a href="calendar.html">📅 日历</a>
+    <a href="roadmap.html" class="on">🗺️ 路线图</a>
+    <a href="market.html">📡 市场信号</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<section class="card">
+  <h2>状态标记<span class="en">三态口径</span></h2>
+  <div class="legend">
+    <span class="badge b-ok">【已有】生产已具备，欠沉淀/重做</span>
+    <span class="badge b-deep">【加深】会，拔高一档</span>
+    <span class="badge b-new">【新】从零学，时间投入区</span>
+  </div>
+  <div class="lanes">
+    <div class="lane">
+      <h4>① AI-native 沉淀（杠杆线）</h4>
+      <div class="sub2">已具生产级，重心是「脱敏沉淀 + 个人重做」</div>
+      <ul>
+        <li><span class="badge b-ok">【已有】</span><span>存量笔记偿债 ≥3 篇：RAG / LLM 网关 / 运维智能体</span></li>
+        <li><span class="badge b-new">【新】</span><span>精读 MCP 协议规范 + 拆解笔记</span></li>
+        <li><span class="badge b-ok">【已有→重做】</span><span>运维 MCP server 个人版（K8s 状态 + 告警摘要）</span></li>
+        <li><span class="badge b-ok">【已有】</span><span>整理 ≥3 个「Agent 纠错」案例</span></li>
+        <li><span class="badge b-new">【新】</span><span>故障排查流程封装成 Agent 诊断工具链（沙箱版）</span></li>
+        <li><span class="badge b-new">【新】</span><span>AI SRE 工具格局季度扫描</span></li>
+      </ul>
+    </div>
+    <div class="lane l2">
+      <h4>② AI Infra 补课（主战场）</h4>
+      <div class="sub2">唯一真实缺口，全部【新】· 2026-10 ~ 2027-06</div>
+      <div class="grp">GPU 与算力</div>
+      <ul>
+        <li><span class="badge b-new">【新】</span><span>GPU 架构基础（SM/显存/MIG/nvlink 拓扑）</span></li>
+        <li><span class="badge b-new">【新】</span><span>DCGM + Prometheus + Grafana 单机监控实验</span></li>
+        <li><span class="badge b-new">【新】</span><span>训练侧认知（NCCL / checkpoint / 故障域）</span></li>
+        <li><span class="badge b-new">【新】</span><span>K8s GPU 调度（Volcano/Kueue，队列与配额）</span></li>
+      </ul>
+      <div class="grp">推理服务（当前主攻）</div>
+      <ul>
+        <li><span class="badge b-new">【新】</span><span>vLLM 部署压测（continuous batching / KV cache）</span></li>
+        <li><span class="badge b-new">【新】</span><span>推理 SLO：TTFT / TPOT / goodput</span></li>
+        <li><span class="badge b-new">【新】</span><span>SGLang/TRT-LLM 取舍 + AWQ/GPTQ 量化</span></li>
+        <li><span class="badge b-new">【新】</span><span>token 成本模型与利用率经营（FinOps）</span></li>
+      </ul>
+      <div class="grp">存储与 Agent 基建</div>
+      <ul>
+        <li><span class="badge b-new">【新】</span><span>3FS 精读拆解（对标 JuiceFS/Ceph）</span></li>
+        <li><span class="badge b-new">【新】</span><span>Agent 沙箱最小用例（gVisor/Firecracker）</span></li>
+        <li><span class="badge b-new">【新】</span><span>Ray / KubeRay 编排认知</span></li>
+      </ul>
+    </div>
+    <div class="lane">
+      <h4>③ SRE 根基加厚（复利线）</h4>
+      <div class="sub2">技能大多已具备，重心是方法论与叙事化</div>
+      <div class="grp">方法论</div>
+      <ul>
+        <li><span class="badge b-new">【新】</span><span>SRE Book + Workbook ≥3 篇笔记</span></li>
+        <li><span class="badge b-ok">【已有】</span><span>复盘叙事模板 + 3 案例成稿</span></li>
+        <li><span class="badge b-new">【新】</span><span>混沌工程：实验环境故障注入一次</span></li>
+      </ul>
+      <div class="grp">性能工程</div>
+      <ul>
+        <li><span class="badge b-ok">【已有→重做】</span><span>eBPF 脚本集个人重做 → 可讲方法论</span></li>
+        <li><span class="badge b-deep">【加深】</span><span>perf + 火焰图完整剖析报告</span></li>
+        <li><span class="badge b-ok">【已有·查漏】</span><span>cgroup v2 / namespace / io_uring</span></li>
+      </ul>
+      <div class="grp">平台与工程</div>
+      <ul>
+        <li><span class="badge b-done">已完成</span><span>CKA（2020 持证）</span></li>
+        <li><span class="badge b-deep">【加深】</span><span>Go 进阶：GC / pprof / 并发模型</span></li>
+        <li><span class="badge b-ok">【已有·补链】</span><span>Terraform 个人环境 IaC 链路 <span class="opt">（可选）</span></span></li>
+        <li><span class="badge b-ok">【已有/新】</span><span>Kafka 已具备 · ClickHouse 最小实验 <span class="opt">（可选）</span></span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>节奏建议<span class="en">Quarterly Rhythm</span></h2>
+  <table>
+    <tr><th>周期</th><th>重点</th></tr>
+    <tr><td><b>2026 Q4</b></td><td>② vLLM 推理实验（当前主攻）+ ① 存量笔记偿债 ≥3 篇 + ③ SRE Book 笔记启动</td></tr>
+    <tr><td><b>2027 Q1</b></td><td>② GPU 监控与调度线 + ③ eBPF 个人重做 / perf 火焰图报告</td></tr>
+    <tr><td><b>2027 Q2</b></td><td>② 沙箱/存储线 + AI SRE 能力叙事文档 + 案例整理</td></tr>
+    <tr><td><b>2027 Q3 起</b></td><td>输出期：开源贡献 / 技术博客，外部反馈校准</td></tr>
+  </table>
+</section>
+
+</div>
+
+<div class="wrap">
+<section class="card" style="padding:20px 28px">
+  <h2>💬 留言<span class="en">Giscus · 登录 GitHub 即可评论</span></h2>
+  <script src="https://giscus.app/client.js"
+    data-repo="fadewalk/study"
+    data-repo-id="R_kgDOVQ4iMQ"
+    data-category="General"
+    data-category-id="DIC_kwDOVQ4iMc4DJKmH"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous" async>
+  </script>
+</section>
+</div>
+
+<footer>本站为个人学习计划的公开视图 · 完整底稿在私有仓库 · 每周一随市场信号自动同步</footer>
+
+</body>
+</html>

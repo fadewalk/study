@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>市场信号 · Study</title>
+<style>
+  :root{--bg:#f4f9f7;--card:#fff;--ink:#152420;--muted:#5b7168;--accent:#0f766e;--accent-soft:#e6f4f1;--deep:#0b3d38;--border:#dbe9e4;--ok:#047857;--warn:#b45309}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.75;font-size:15px}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header.hero{background:linear-gradient(135deg,#052e2b,#0f766e 65%,#14b8a6 130%);color:#fff;padding:38px 24px 32px;border-radius:0 0 22px 22px}
+  .hero-inner{max-width:980px;margin:0 auto}
+  .tag{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:3px 13px;font-size:12.5px;letter-spacing:1px;margin-bottom:12px}
+  h1{font-size:25px;font-weight:700}
+  .sub{margin-top:8px;font-size:15px;opacity:.95}
+  .sub b{color:#fde68a}
+  .chips{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+  .chip{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.3);padding:4px 12px;border-radius:999px;font-size:12.5px}
+  section.card{background:var(--card);border:1px solid var(--border);border-radius:15px;padding:24px 28px;margin:20px 0;box-shadow:0 1px 3px rgba(10,60,50,.05)}
+  h2{font-size:18.5px;margin-bottom:14px;padding-left:12px;border-left:4px solid var(--accent)}
+  h2 .en{color:var(--muted);font-size:12.5px;font-weight:400;margin-left:9px}
+  h3{font-size:15.5px;margin:14px 0 8px;color:#0b3d38}
+  p{margin:8px 0} a{color:var(--accent)} .muted{color:var(--muted);font-size:13px}
+  nav.toc{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:10px 0;margin-bottom:26px}
+  nav.toc .wrap{padding:0 20px;display:flex;flex-wrap:wrap}
+  nav.toc a{color:var(--muted);text-decoration:none;font-size:13.5px;margin-right:16px;padding:4px 2px;border-bottom:2px solid transparent;white-space:nowrap}
+  nav.toc a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+  nav.toc a.on{color:var(--deep);border-bottom-color:var(--accent);font-weight:700}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px}
+  th{background:#eef7f4;text-align:left;padding:8px 11px;border-bottom:2px solid var(--border);white-space:nowrap}
+  td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:hover td{background:#fafdfc}
+  .up{color:var(--ok);font-weight:700}.flat{color:var(--muted)}
+  .badge{display:inline-block;font-size:11.5px;padding:1px 9px;border-radius:999px;font-weight:600;white-space:nowrap}
+  .b-new{background:#eef2ff;color:#4338ca;border:1px solid #c7d2fe}
+  .b-ok{background:#ecfdf5;color:#047857;border:1px solid #a7f3d0}
+  .plist{margin:8px 0;padding:0;list-style:none}
+  .plist li{padding:9px 13px;margin:7px 0;background:#fbfefd;border:1px solid var(--border);border-radius:10px;font-size:14px}
+  .plist li b{color:#0b3d38}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0 4px}
+  .stat{background:linear-gradient(180deg,#fbfefd,#f2f9f6);border:1px solid var(--border);border-radius:13px;padding:15px 14px;text-align:center}
+  .stat .num{font-size:24px;font-weight:800;color:var(--accent)}
+  .stat .lab{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.5}
+  footer{text-align:center;color:var(--muted);font-size:13px;padding:20px 24px 38px;line-height:2}
+  @media(max-width:820px){.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="tag">MARKET SIGNAL · 每周一自动更新</span>
+    <h1>市场信号 · 2026-10-19 第 2 期</h1>
+    <p class="sub">扫描招聘市场的技能需求信号（关键词频次 + 新出现的技术要求），<b>用来校准学习路线图的优先级</b>。样本 n=27，已补齐可观测与 SRE 类查询配额。</p>
+    <div class="chips">
+      <span class="chip">口径：JD 原文明确出现才计数</span>
+      <span class="chip">单期波动不下结论 · 连续两期同向才升级</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="index.html">🏠 首页</a>
+    <a href="calendar.html">📅 日历</a>
+    <a href="roadmap.html">🗺️ 路线图</a>
+    <a href="market.html" class="on">📡 市场信号</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<section class="card">
+  <h2>本期速览<span class="en">2026-10-19 · n=27</span></h2>
+  <div class="stats">
+    <div class="stat"><div class="num">7/27</div><div class="lab">AI Infra 岗位名命中<br>岗位族名坐实</div></div>
+    <div class="stat"><div class="num">7/27</div><div class="lab">GPU 类关键词<br>主旋律稳定</div></div>
+    <div class="stat"><div class="num">3/27</div><div class="lab">可观测类回归<br>（查询配额修复）</div></div>
+    <div class="stat"><div class="num">45-95K</div><div class="lab">智算集群运维专家<br>高薪带新岗位名</div></div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>关键词频次<span class="en">vs 上期</span></h2>
+  <table>
+    <tr><th>关键词</th><th>本期</th><th>判读</th></tr>
+    <tr><td><b>AI Infra（岗位名）</b></td><td class="up">7/27</td><td>腾讯/京东/字节/阿里/小米/拼多多/滴滴——岗位族名坐实</td></tr>
+    <tr><td><b>GPU（集群/运维/调度/算力）</b></td><td class="flat">7/27</td><td>主旋律稳定；新增「智算」高薪带</td></tr>
+    <tr><td>Go/Python 等服务端语言</td><td class="flat">5/27</td><td>恒定门槛；字节 ML 系统 SRE 仅 1 年经验起</td></tr>
+    <tr><td><b>Prometheus/可观测</b></td><td class="up">3/27</td><td>配额修复后回归；腾讯专职岗 + OTel 进任职要求</td></tr>
+    <tr><td><b>训练框架（Megatron/DeepSpeed）</b></td><td class="up">2/27</td><td>新词：SRE 岗把训练框架写成任职要求</td></tr>
+    <tr><td>vLLM/SGLang/TRT-LLM</td><td class="flat">2/27</td><td>本期命中偏少（构成波动）；上期已确认源码级深化趋势</td></tr>
+    <tr><td>NCCL · K8s · Linux</td><td class="flat">1-2/27</td><td>稳定存在</td></tr>
+  </table>
+</section>
+
+<section class="card">
+  <h2>新出现的技术要求<span class="en">What's New</span></h2>
+  <ul class="plist">
+    <li><span class="badge b-new">新岗位</span> <b>「Agent 可观测」专职岗</b>：腾讯设岗，任职要求 OpenTelemetry、Prometheus——Agent×可观测交叉是新岗位名组合。</li>
+    <li><span class="badge b-new">要求上移</span> <b>训练生产 SRE 要求懂训练框架</b>：Megatron/PyTorch 与预训练/后训练流程写成任职要求。</li>
+    <li><span class="badge b-ok">高薪带</span> <b>「智算集群运维专家」45-70K / 70-95K</b>：对照低端 GPU 运维 6-8K，带内分化 10 倍。</li>
+    <li><span class="badge b-new">调度细化</span> 万卡调度 JD 出现<b>拓扑感知调度</b>（Quota/优先级/抢占/弹性伸缩）。</li>
+    <li><span class="badge b-ok">国产线</span> 曙光 8000 全国产 10 万卡 AI 超集群落成（媒体口径）。</li>
+    <li><span class="badge b-ok">上一期回看</span> AI 编程工具成校招门槛（Claude Code/Codex/Gemini CLI）、「Agentic Infra」岗位族、推理要求深化到源码级 + PD 分离。</li>
+  </ul>
+</section>
+
+<section class="card">
+  <h2>对学习路线的含义<span class="en">So What</span></h2>
+  <table>
+    <tr><th>路线图项</th><th>信号</th><th>含义</th></tr>
+    <tr><td><b>② vLLM 推理（当前主攻）</b></td><td>持续高频 + 源码级深化</td><td>方向正确；实验补 PD 分离与前缀缓存观察点</td></tr>
+    <tr><td><b>② K8s GPU 调度（2027 Q1）</b></td><td>小红书万卡调度 JD 逐字对应</td><td>Q1 排期被市场确认；补拓扑感知调度认知</td></tr>
+    <tr><td><b>③ OpenTelemetry</b></td><td>腾讯 Agent 可观测专职岗</td><td>优先级上调提案：与既有可观测资产衔接最顺</td></tr>
+    <tr><td><b>③ 训练侧认知</b></td><td>训练生产 SRE 要求 Megatron</td><td>认知加项：预训练/后训练流程速览</td></tr>
+  </table>
+</section>
+
+</div>
+
+<div class="wrap">
+<section class="card" style="padding:20px 28px">
+  <h2>💬 留言<span class="en">Giscus · 登录 GitHub 即可评论</span></h2>
+  <script src="https://giscus.app/client.js"
+    data-repo="fadewalk/study"
+    data-repo-id="R_kgDOVQ4iMQ"
+    data-category="General"
+    data-category-id="DIC_kwDOVQ4iMc4DJKmH"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous" async>
+  </script>
+</section>
+</div>
+
+<footer>本站为个人学习计划的公开视图 · 数据为公开 JD 关键词统计 · 每周一自动更新</footer>
+
+</body>
+</html>
