@@ -44,3 +44,71 @@ html[data-theme="dark"] .gapbox b{color:#a5b4fc!important}
   border:1px solid var(--border);background:var(--card);color:var(--ink);font-size:17px;cursor:pointer;
   box-shadow:0 1px 4px rgba(10,40,60,.18);line-height:1}
 #themeToggle:hover{border-color:var(--accent)}
+
+/* ============ 移动端自适应（≤640px） ============ */
+@media(max-width:640px){
+  html{-webkit-text-size-adjust:100%}
+  body{font-size:14.5px}
+  .wrap{padding:0 12px}
+  section.card{padding:15px 13px!important;border-radius:12px!important;margin:13px 0!important}
+  header.hero{padding:24px 14px 20px!important;border-radius:0 0 16px 16px!important}
+  h1{font-size:20px!important;line-height:1.4}
+  .hero h1{font-size:20px!important}
+  .hero p.sub{font-size:13.5px!important;margin-top:6px}
+  .chip,.tag{font-size:11px!important;padding:3px 9px!important}
+  .chips{gap:6px!important;margin-top:10px!important}
+  h2{font-size:16.5px!important}
+  h3{font-size:14.5px!important}
+  .muted{font-size:12px}
+
+  /* 表格 → 块级横向滚动 */
+  table{display:block;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;
+    font-size:12.5px!important;border:1px solid var(--border);border-radius:8px}
+  th,td{padding:7px 9px!important}
+
+  /* 日历：紧凑格 + 任务圆点化（点日期格看详情） */
+  .cal{gap:3px}
+  .cal .dow{font-size:10px;padding:2px 0}
+  .day{min-height:50px;padding:3px;border-radius:7px}
+  .day .dnum{font-size:10.5px}
+  .day .chips{gap:2px;margin-top:3px}
+  .tchip{font-size:0;padding:0;height:5px;border-radius:2px}   /* 隐文字留色条 */
+  .day .more{font-size:9px;margin-top:2px}
+
+  /* 卡片网格降列 */
+  .phases{grid-template-columns:repeat(2,1fr)!important;gap:8px}
+  .phase{padding:11px 11px}
+  .phase h4{font-size:12.5px}
+  .phase .goal,.prog .lab{font-size:11px}
+  .stats{grid-template-columns:repeat(2,1fr)!important;gap:10px}
+  .stat{padding:12px 8px}
+  .stat .num{font-size:19px}
+  .stat .lab{font-size:11.5px}
+  .entries,.lanes,.repos,.milestones,.decisions,.grid2{grid-template-columns:1fr!important;gap:12px}
+  .entry{padding:15px 16px}
+  .domain,.ms,.dec{padding:13px 14px}
+
+  /* 控制区与任务条 */
+  .ctrl{flex-direction:column;align-items:stretch;gap:8px}
+  .tabs{justify-content:center}
+  .tabs button{padding:6px 13px;font-size:13px}
+  .mnav{justify-content:center}
+  .task{padding:9px 10px;border-radius:9px}
+  .task input[type=checkbox]{width:15px;height:15px}
+  .task .ttitle{font-size:13.5px}
+  .task .tdetail{font-size:12px}
+  .task .tmeta{font-size:10.5px;flex-wrap:wrap}
+  .weekcard .whead{flex-wrap:wrap;gap:3px;font-size:12.5px;padding:8px 11px}
+  .weekcard .wbody{padding:4px 9px 9px}
+  .clog li{flex-wrap:wrap;gap:6px;font-size:13px}
+  .cdate{min-width:0}
+  .bar-row{grid-template-columns:84px 1fr 58px!important;gap:7px}
+  .bar-row .kw{font-size:11.5px}
+  #themeToggle{top:8px;right:8px;width:34px;height:34px;font-size:15px}
+  footer{font-size:12px!important;padding:16px 14px 30px!important}
+}
+
+/* 登录壳（build 模板生成，同样受用） */
+@media(max-width:480px){
+  .login{width:min(360px,92vw)!important;padding:26px 20px!important}
+}
